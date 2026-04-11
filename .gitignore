@@ -1,4 +1,5 @@
 .agent/
+.wrangler/
 stitch_assets/download_images.py
 stitch_assets/remove_bg.py
 stitch_assets/remove_black_bg.py
