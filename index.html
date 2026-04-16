@@ -715,6 +715,38 @@ function togglePrice(type) {
 </script>
 <script src="https://bcl.my/js/bc-encrypted-payment-embed.js"></script>
 <script>
+// Embed mode: ?embed=bcl hides payment form (BCL provides their own)
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('embed') === 'bcl') {
+        // Hide the registration/payment form section
+        var daftarSection = document.getElementById('daftar');
+        if (daftarSection) daftarSection.style.display = 'none';
+
+        // Hide nav bar (BCL has its own navigation)
+        var nav = document.querySelector('nav');
+        if (nav) nav.style.display = 'none';
+
+        // Remove top padding from header since nav is hidden
+        var header = document.querySelector('header');
+        if (header) header.style.paddingTop = '0';
+
+        // Make all links open in new tab (escape iframe)
+        document.querySelectorAll('a[href^="http"]').forEach(function(a) {
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+        });
+
+        // Redirect anchor links that pointed to #daftar to WhatsApp instead
+        document.querySelectorAll('a[href="#daftar"]').forEach(function(a) {
+            a.href = 'https://wasap.my/60102539332/yok-korban';
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+        });
+    }
+})();
+</script>
+<script>
 (function() {
     const posters = ['stitch_assets/images/poster_1.jpg', 'stitch_assets/images/poster_2.jpg', 'stitch_assets/images/poster_3.jpg'];
     let currentSlide = 0;
