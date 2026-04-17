@@ -715,10 +715,6 @@ function togglePrice(type) {
 (function() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('embed') === 'bcl') {
-        // Hide the registration/payment form section
-        var daftarSection = document.getElementById('daftar');
-        if (daftarSection) daftarSection.style.display = 'none';
-
         // Hide nav bar (BCL has its own navigation)
         var nav = document.querySelector('nav');
         if (nav) nav.style.display = 'none';
@@ -727,15 +723,8 @@ function togglePrice(type) {
         var header = document.querySelector('header');
         if (header) header.style.paddingTop = '0';
 
-        // Make all links open in new tab (escape iframe)
+        // Make all external links open in new tab (escape iframe)
         document.querySelectorAll('a[href^="http"]').forEach(function(a) {
-            a.setAttribute('target', '_blank');
-            a.setAttribute('rel', 'noopener noreferrer');
-        });
-
-        // Redirect anchor links that pointed to #daftar to WhatsApp instead
-        document.querySelectorAll('a[href="#daftar"]').forEach(function(a) {
-            a.href = 'https://wasap.my/60102539332/yok-korban';
             a.setAttribute('target', '_blank');
             a.setAttribute('rel', 'noopener noreferrer');
         });
