@@ -472,6 +472,47 @@ Pelayar anda tidak menyokong video.
 </div>
 </div>
 </section>
+<section id="projek-tahfiz" class="py-24 bg-primary text-white overflow-hidden scroll-mt-20">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex flex-col lg:flex-row gap-16 items-center">
+<div class="lg:w-1/2 space-y-6">
+<span class="text-secondary font-bold tracking-[0.2em] uppercase text-xs block">Kerjasama Institusi</span>
+<h2 class="text-4xl md:text-6xl font-impact leading-[1.1]">Projek Tahfiz</h2>
+<p class="text-white/70 text-base leading-relaxed font-body">
+Al Falah Sinergi dengan penuh komitmen menjalinkan kerjasama bersama institusi tahfiz dalam melaksanakan ibadah korban, sebagai usaha memperkasa kebajikan pelajar tahfiz serta menyemai semangat pengorbanan dalam masyarakat.
+</p>
+<p class="text-secondary font-serif text-xl italic">
+Ayuh berkorban bersama Al Falah Sinergi!
+</p>
+<p class="text-white/60 text-sm leading-relaxed font-body">
+Dengan kerjasama pusat tahfiz terpilih, setiap bahagian korban anda bukan sahaja menyempurnakan ibadah, malah turut menyumbang kepada kebajikan dan kelangsungan pendidikan para penghafaz Al-Quran.
+</p>
+<a href="#daftar" class="inline-block bg-secondary text-white px-8 py-4 rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-xl no-underline mt-4">
+Sertai Projek Tahfiz
+</a>
+</div>
+<div class="lg:w-1/2 w-full">
+<div class="relative rounded-3xl overflow-hidden shadow-2xl bg-black" id="tahfizSlideshow">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img id="tahfizImg" src="stitch_assets/images/tahfiz/tahfiz_1.jpeg" alt="Projek Tahfiz Al Falah Sinergi" class="w-full h-full object-cover transition-opacity duration-500"/>
+</div>
+<div class="absolute inset-0 flex items-center justify-between px-3 pointer-events-none">
+<button id="tahfizPrev" class="w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer transition-transform hover:scale-110" aria-label="Sebelum">
+<span class="material-symbols-outlined text-primary text-xl">chevron_left</span>
+</button>
+<button id="tahfizNext" class="w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg pointer-events-auto cursor-pointer transition-transform hover:scale-110" aria-label="Seterusnya">
+<span class="material-symbols-outlined text-primary text-xl">chevron_right</span>
+</button>
+</div>
+<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5" id="tahfizDots"></div>
+<div class="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm">
+<span id="tahfizCounter">1</span> / 19
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="py-24 bg-background">
 <div class="max-w-3xl mx-auto px-8">
 <h2 class="text-4xl md:text-6xl font-impact text-primary mb-16 text-center">Soalan Lazim (FAQ)</h2>
@@ -777,6 +818,67 @@ function togglePrice(type) {
         if (e.key === 'ArrowLeft') prevBtn.click();
         if (e.key === 'ArrowRight') nextBtn.click();
     });
+})();
+</script>
+<script>
+(function() {
+    var total = 19;
+    var current = 0;
+    var img = document.getElementById('tahfizImg');
+    var counter = document.getElementById('tahfizCounter');
+    var dotsContainer = document.getElementById('tahfizDots');
+    var slideshow = document.getElementById('tahfizSlideshow');
+    var autoTimer;
+
+    // Generate dots
+    for (var i = 0; i < total; i++) {
+        var dot = document.createElement('div');
+        dot.className = 'w-2 h-2 rounded-full cursor-pointer transition-all ' + (i === 0 ? 'bg-white scale-125' : 'bg-white/40');
+        dot.dataset.index = i;
+        dot.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
+        dotsContainer.appendChild(dot);
+    }
+
+    function updateDots() {
+        var dots = dotsContainer.children;
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].className = 'w-2 h-2 rounded-full cursor-pointer transition-all ' + (i === current ? 'bg-white scale-125' : 'bg-white/40');
+        }
+    }
+
+    function goTo(index) {
+        if (index === current) return;
+        img.style.opacity = '0';
+        setTimeout(function() {
+            current = index;
+            img.src = 'stitch_assets/images/tahfiz/tahfiz_' + (current + 1) + '.jpeg';
+            counter.textContent = current + 1;
+            img.style.opacity = '1';
+            updateDots();
+        }, 300);
+    }
+
+    function next() { goTo(current === total - 1 ? 0 : current + 1); }
+    function prev() { goTo(current === 0 ? total - 1 : current - 1); }
+
+    document.getElementById('tahfizPrev').addEventListener('click', function() { prev(); resetAuto(); });
+    document.getElementById('tahfizNext').addEventListener('click', function() { next(); resetAuto(); });
+
+    // Auto-play
+    function startAuto() { autoTimer = setInterval(next, 4000); }
+    function resetAuto() { clearInterval(autoTimer); startAuto(); }
+    slideshow.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
+    slideshow.addEventListener('mouseleave', function() { startAuto(); });
+    startAuto();
+
+    // Touch swipe
+    var touchStartX = 0;
+    slideshow.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; clearInterval(autoTimer); }, {passive: true});
+    slideshow.addEventListener('touchend', function(e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+        startAuto();
+    }, {passive: true});
 })();
 </script>
 </body></html>
