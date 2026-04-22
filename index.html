@@ -841,6 +841,10 @@ function togglePrice(type) {
             a.setAttribute('target', '_blank');
             a.setAttribute('rel', 'noopener noreferrer');
         });
+
+        // Hide the Daftar (registration/form) section — BCL provides their own
+        var daftar = document.getElementById('daftar');
+        if (daftar) daftar.style.display = 'none';
     }
 })();
 </script>
